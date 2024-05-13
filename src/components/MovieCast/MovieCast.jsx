@@ -5,37 +5,34 @@ import s from "./MovieCast.module.css";
 
 const MovieCast = () => {
   const { movieId } = useParams();
-  const [items, setActors] = useState([]);
+  const [cast, setCast] = useState([]);
 
   useEffect(() => {
-    try {
-      const getCast = async () => {
+    const getCast = async () => {
+      try {
         const data = await fetchMovieCast(movieId);
-
-        setActors(data);
-      };
-      getCast();
-    } catch (error) {
-      console.log(error);
-    }
+        setCast(data || []); // Проверяем, является ли data пустым или undefined, и устанавливаем пустой массив в этом случае
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCast();
   }, [movieId]);
 
   return (
-    <div>
-      <ul>
-        {items.map((actor) => {
-          return (
-            <li key={actor.id}>
-              <img
-                className={s.img}
-                src={`https://image.tmdb.org/t/p/w92${actor.profile_path}`}
-                alt={actor.name}
-              />
-              <h4 className={s.name}>{actor.name}</h4>
-              <p className={s.char}>{actor.character}</p>
-            </li>
-          );
-        })}
+    <div className={s.wrap}>
+      <ul className={s.list}>
+        {cast.slice(0, 10).map((actor) => (
+          <li className={s.item} key={actor.id}>
+            <img
+              className={s.img}
+              src={`https://image.tmdb.org/t/p/w92${actor.profile_path}`}
+              alt={actor.name}
+            />
+            <h4 className={s.name}>{actor.name}</h4>
+            <p className={s.char}>{actor.character}</p>
+          </li>
+        ))}
       </ul>
     </div>
   );

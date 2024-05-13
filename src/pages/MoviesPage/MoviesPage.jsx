@@ -53,9 +53,11 @@ const MoviesPage = () => {
   return (
     <div>
       <form onSubmit={handleSubmit} className={s.form}>
-        <button className={s.btn} type="submit">
-          <BiSearchAlt2 />
-        </button>
+        <div className={s.wrap}>
+          <button className={s.btn} type="submit">
+            <BiSearchAlt2 />
+          </button>
+        </div>
         <input
           className={s.input}
           type="text"

@@ -1,0 +1,29 @@
+.title {
+  font-size: 42px;
+  font-weight: 400;
+  color: Beige;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+.item {
+  flex: 1 1 45%;
+  padding: 10px;
+  color: Beige;
+  text-align: center;
+  transition: transform 0.5s;
+}

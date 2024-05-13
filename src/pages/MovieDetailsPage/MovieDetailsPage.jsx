@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Suspense, useEffect, useState } from "react";
+import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 import { fetchMovieById } from "../../service/moviesAPI";
 import { IoArrowBack } from "react-icons/io5";
 import s from "./MovieDetailsPage.module.css";
@@ -23,7 +23,7 @@ const MovieDetailsPage = () => {
 
   return (
     <div>
-      <Link to="/">
+      <Link to="/" className={s.btn}>
         <IoArrowBack size="30" /> Go back
       </Link>
       <div className={s.wrapper}>
@@ -36,7 +36,7 @@ const MovieDetailsPage = () => {
         )}
       </div>
       <div className={s.descr}>
-        <h1>
+        <h1 className={s.title}>
           {movie && movie.title} {movie && movie.release_date.split("-")[0]}
         </h1>
         <p className={s.text}>
@@ -44,12 +44,12 @@ const MovieDetailsPage = () => {
           {movie && movie.vote_average && Math.round(movie.vote_average)}/10
         </p>
         {movie && (
-          <div>
+          <div className={s.over}>
             <h2 className={s.subTitle}>Overview</h2>
             <p className={s.text}>{movie.overview}</p>
             {movie.genres && (
               <div>
-                <h3 className={s.genreTitle}>Genres</h3>
+                <h3 className={s.subTitleG}>Genres</h3>
                 <ul className={s.list}>
                   {movie.genres.map((genre) => {
                     return (
@@ -64,10 +64,17 @@ const MovieDetailsPage = () => {
           </div>
         )}
       </div>
-      <nav>
-        <NavLink to="cast">Cast</NavLink>
-        <NavLink to="reviews">Reviews</NavLink>
+      <nav className={s.navWrap}>
+        <NavLink to="cast" className={s.nav}>
+          Cast
+        </NavLink>
+        <NavLink to="reviews" className={s.nav}>
+          Reviews
+        </NavLink>
       </nav>
+      <Suspense fallback={null}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 };
