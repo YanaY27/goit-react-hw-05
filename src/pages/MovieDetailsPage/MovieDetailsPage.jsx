@@ -14,19 +14,18 @@ const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const location = useLocation();
-  const goBackRef = useRef(location.state?.from ?? "/");
+  const goBackRef = useRef(location.state || "/");
 
   useEffect(() => {
-    try {
-      const getMovieById = async () => {
+    const getMovieById = async () => {
+      try {
         const data = await fetchMovieById(movieId);
-
         setMovie(data);
-      };
-      getMovieById();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMovieById();
   }, [movieId]);
 
   return (
@@ -59,13 +58,11 @@ const MovieDetailsPage = () => {
               <div>
                 <h3 className={s.subTitleG}>Genres</h3>
                 <ul className={s.list}>
-                  {movie.genres.map((genre) => {
-                    return (
-                      <li className={s.item} key={genre.id}>
-                        {genre.name}
-                      </li>
-                    );
-                  })}
+                  {movie.genres.map((genre) => (
+                    <li className={s.item} key={genre.id}>
+                      {genre.name}
+                    </li>
+                  ))}
                 </ul>
               </div>
             )}
@@ -73,10 +70,16 @@ const MovieDetailsPage = () => {
         )}
       </div>
       <nav className={s.navWrap}>
-        <NavLink to="cast" className={s.nav}>
+        <NavLink
+          to={{ pathname: "cast", state: location.state }}
+          className={s.nav}
+        >
           Cast
         </NavLink>
-        <NavLink to="reviews" className={s.nav}>
+        <NavLink
+          to={{ pathname: "reviews", state: location.state }}
+          className={s.nav}
+        >
           Reviews
         </NavLink>
       </nav>

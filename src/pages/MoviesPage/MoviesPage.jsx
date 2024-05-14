@@ -7,46 +7,36 @@ import { Link } from "react-router-dom";
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
-  const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    // Отримати значення параметра "query" з URL
-    const params = new URLSearchParams(searchParams);
-    const queryFromURL = params.get("query") || "";
-
-    // Встановити значення query з URL
-    setQuery(queryFromURL);
-  }, [searchParams]);
 
   useEffect(() => {
     const getMovieByQuery = async () => {
       try {
-        const data = await fetchMovieByQuery(query);
+        const queryFromURL = searchParams.get("query") || "";
+        const data = await fetchMovieByQuery(queryFromURL);
         if (Array.isArray(data)) {
           setMovies(data);
         } else {
-          setMovies([]); // Якщо data не є масивом, вставити movies в пустий масив
+          setMovies([]);
         }
       } catch (error) {
         console.log(error);
       }
     };
     getMovieByQuery();
-  }, [query]);
+  }, [searchParams]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
-    const searchValue = form.elements.query.value;
+    const searchValue = form.elements.query.value.trim();
 
-    if (searchValue.trim() === "") {
+    if (searchValue === "") {
       alert("Please enter the field");
       return;
     }
-    // Оновлення параметру "query" у URL з новим значенням
+    // Встановлюємо всі параметри разом
     setSearchParams({ query: searchValue });
-    // setQuery(searchValue); // Більше не потрібно, оскільки значення query оновлюється через searchParams
     form.reset();
   };
 
@@ -69,15 +59,13 @@ const MoviesPage = () => {
       </form>
       <div>
         <ul className={s.list}>
-          {movies.map((movie) => {
-            return (
-              <li className={s.item} key={movie.id}>
-                <Link className={s.link} to={`/movies/${movie.id}`}>
-                  {movie.title}
-                </Link>
-              </li>
-            );
-          })}
+          {movies.map((movie) => (
+            <li className={s.item} key={movie.id}>
+              <Link className={s.link} to={`/movies/${movie.id}`}>
+                {movie.title}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
