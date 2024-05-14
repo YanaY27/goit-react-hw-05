@@ -1,5 +1,11 @@
-import { Suspense, useEffect, useState } from "react";
-import { Link, NavLink, Outlet, useParams } from "react-router-dom";
+import { Suspense, useEffect, useRef, useState } from "react";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import { fetchMovieById } from "../../service/moviesAPI";
 import { IoArrowBack } from "react-icons/io5";
 import s from "./MovieDetailsPage.module.css";
@@ -7,6 +13,8 @@ import s from "./MovieDetailsPage.module.css";
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
+  const location = useLocation();
+  const goBackRef = useRef(location.state?.from ?? "/");
 
   useEffect(() => {
     try {
@@ -23,7 +31,7 @@ const MovieDetailsPage = () => {
 
   return (
     <div>
-      <Link to="/" className={s.btn}>
+      <Link to={goBackRef.current} className={s.btn}>
         <IoArrowBack size="30" /> Go back
       </Link>
       <div className={s.wrapper}>
