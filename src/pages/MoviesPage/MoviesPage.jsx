@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { fetchMovieByQuery } from "../../service/moviesAPI";
 import { BiSearchAlt2 } from "react-icons/bi";
 import s from "./MoviesPage.module.css";
-import { Link } from "react-router-dom";
+import MovieList from "../../components/MovieList/MovieList";
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
@@ -58,15 +58,7 @@ const MoviesPage = () => {
         />
       </form>
       <div>
-        <ul className={s.list}>
-          {movies.map((movie) => (
-            <li className={s.item} key={movie.id}>
-              <Link className={s.link} to={`/movies/${movie.id}`}>
-                {movie.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <MovieList movies={movies} />
       </div>
     </div>
   );
